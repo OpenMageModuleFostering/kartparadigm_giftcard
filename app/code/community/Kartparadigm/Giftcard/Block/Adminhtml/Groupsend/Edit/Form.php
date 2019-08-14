@@ -30,12 +30,30 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Groupsend_Edit_Form extends Mage_Adm
             'name' => 'giftcard_name',
         ));
         $fieldset->addField('giftcard_val', 'text', array(
-            'label' => Mage::helper('kartparadigm_giftcard')->__('Giftcard Amount') ,
+            'label' => Mage::helper('kartparadigm_giftcard')->__('Giftcard Value') ,
             'class' => 'required-entry',
             'required' => true,
             'name' => 'giftcard_val',
         ));
-        $customerGroupModel = new Mage_Customer_Model_Group();
+      
+     
+  $fieldset->addField('send_check', 'checkbox', array(
+          'label'     => Mage::helper('kartparadigm_giftcard')->__('Send To Group'),
+          'name'      => 'send_check',
+          'onclick' => "",
+          'onchange' => "if(document.getElementById('send_check').checked){ 
+			    document.getElementById('receiver_name').setAttribute('disabled', true);
+			   document.getElementById('receiver_mail').setAttribute('disabled', true);
+			   document.getElementById('customer_groups').removeAttribute('disabled');
+			}else{
+			document.getElementById('receiver_name').removeAttribute('disabled');
+			   document.getElementById('receiver_mail').removeAttribute('disabled');
+			   document.getElementById('customer_groups').setAttribute('disabled', true);
+
+			}",
+          'disabled' => false,
+        ));
+$customerGroupModel = new Mage_Customer_Model_Group();
         $customerGroups = array();
         $allCustomerGroups = $customerGroupModel->getCollection()->addFieldToFilter('customer_group_id', array(
             'nin' => array(
@@ -47,9 +65,53 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Groupsend_Edit_Form extends Mage_Adm
             'label' => Mage::helper('kartparadigm_giftcard')->__('Customer Group') ,
             'class' => 'required-entry',
             'required' => true,
+	    'disabled' => true,
             'options' => $allCustomerGroups,
+'after_element_html' => '<br/><center>(or)</center>',
         ));
-        $fieldset->addField('giftcard_status', 'select', array(
+
+$fieldset->addField('par', 'checkbox', array(
+          'label'     => Mage::helper('kartparadigm_giftcard')->__('Send To A Customer'),
+          'name'      => 'par',
+           'style' => "display:none;",
+        ));
+
+$fieldset->addField('receiver_name', 'text', array(
+		'label'=> Mage::helper('kartparadigm_giftcard')->__('Receiver Name'),
+		'class'=> 'required-entry',
+		'required' => true,
+		'name'=> 'receiver_name',
+		'disabled' => false,
+		
+
+		));
+		$fieldset->addField('receiver_mail', 'text', array(
+		'label'=> Mage::helper('kartparadigm_giftcard')->__('Receiver Email'),
+		'class'=> 'required-entry',
+		'required' => true,
+		'name'=> 'receiver_mail',
+		'disabled' => false,
+		));
+  
+  
+      $fieldset->addField('giftcard_msg', 'textarea', array(
+		'label'=> Mage::helper('kartparadigm_giftcard')->__('Giftcard Message'),
+		'class'=> 'required-entry',
+		'required' => true,
+		'name'=> 'giftcard_msg',
+'style'=>"height: 6em;",
+		));
+  
+ $finderLink1 = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'giftcard/preview.png';
+
+         $fieldset->addField('imagelab', 'label', array(
+            'label' => Mage::helper('kartparadigm_giftcard')->__('Giftcard Template') ,
+            'name' => 'image',
+            'value' => $finderLink1,
+            'required' => true,
+            'after_element_html' => '<img src="' . $finderLink1 . '" alt="Template" height="200" width="280" />',
+         ));
+ $fieldset->addField('giftcard_status', 'select', array(
             'name' => 'giftcard_status',
             'label' => Mage::helper('kartparadigm_giftcard')->__('Giftcard Status') ,
             'class' => 'required-entry',
@@ -59,14 +121,7 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Groupsend_Edit_Form extends Mage_Adm
                 1 => Mage::helper('kartparadigm_giftcard')->__('Active') ,
             ) ,
         ));
-        $fieldset->addField('store_id', 'select', array( //can use multiselect
-            'name' => 'store_id[]',
-            'label' => Mage::helper('cms')->__('Store View') ,
-            'title' => Mage::helper('cms')->__('Store View') ,
-            'required' => true,
-            'values' => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true) ,
-        ));
-        $fieldset->addField('giftcard_currency', 'select', array(
+$fieldset->addField('giftcard_currency', 'select', array(
             'name' => 'giftcard_currency',
             'label' => Mage::helper('kartparadigm_giftcard')->__('Currency') ,
             'class' => 'required-entry',
@@ -74,15 +129,13 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Groupsend_Edit_Form extends Mage_Adm
             'values' => Mage::getSingleton('adminhtml/system_config_source_currency')->toOptionArray(false) ,
             'value' => Mage::app()->getStore()->getDefaultCurrency()->getCurrencyCode() ,
         ));
-        // date field
-        $fieldset->addField('giftcard_msg', 'textarea', array(
-		'label'=> Mage::helper('kartparadigm_giftcard')->__('Giftcard Message'),
-		'class'=> 'required-entry',
-		'required' => true,
-		'name'=> 'giftcard_msg',
-		));
-
-
+        $fieldset->addField('store_id', 'select', array( //can use multiselect
+            'name' => 'store_id[]',
+            'label' => Mage::helper('cms')->__('Store View') ,
+            'title' => Mage::helper('cms')->__('Store View') ,
+            'required' => true,
+            'values' => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true) ,
+        ));
         $arr = array(
             'name' => 'expiry_date',
             'label' => Mage::helper('kartparadigm_giftcard')->__('Expiry Date') ,

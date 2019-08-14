@@ -23,14 +23,14 @@ class Kartparadigm_Giftcard_Adminhtml_TemplateController extends Mage_Adminhtml_
         $imgpath = $mediapath . $row['template_img'];
         else $imgpath = "http://www.imagesbuddy.com/images/165/smile-greeting-card.jpg";
         $barcode = $mediapath . "giftcard/bar.gif";
-        $arr['customername'] = "From Name";
+        $arr['customername'] = "Sender";
         $arr['giftcardname'] = "Giftcard Name";
-        $arr['giftcardval'] = "$ 500";
+        $arr['giftcardval'] = "$500";
         $arr['giftcardcode'] = "XXXX-XXXX-XXXX";
         $arr['templateimg'] = $imgpath;
         $arr['themecolor'] = "#" . $row['theme_color'];
         $arr['textcolor'] = "#" . $row['text_color'];
-        $arr['receivername'] = "Receiver Name";
+        $arr['receivername'] = "Receiver";
         $arr['gcnote'] = $row['giftcard_note'];
         $arr['gcmsg'] = "Giftcard Message By Sender :)";
         $arr['barcode'] = $barcode;

@@ -75,7 +75,7 @@
  			    <comment><![CDATA[Ex : 60 means 60 days after giftcard purchase]]></comment>
                         </txt_expiry>
 			<customamt_select translate="label">
-                            <label>Show Custom Amout Redeem Option: </label>
+                            <label>Show Partial Amout Redeem Option </label>
                             <comment>Enable Custom Amount Redeeming Text Box In Giftcard Block</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>90</sort_order>
@@ -85,7 +85,7 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </customamt_select>
 			<othersbuy_select translate="label">
-                            <label>Can Other Customers Redeem Giftcard : </label>
+                            <label>Allow Guest To Redeem Giftcard  </label>
                             <comment>Yes allows other customers also redeeming giftcard</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>90</sort_order>
@@ -95,7 +95,7 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </othersbuy_select>
 			<giftcardbuy_select translate="label">
-                            <label>Can Giftcard Code Used To Buy Giftcards : </label>
+                            <label>Allow Giftcard Code To Buy Another Giftcard  </label>
                             <comment>Yes allows buying giftcards with giftcard codes</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>90</sort_order>
@@ -105,7 +105,7 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </giftcardbuy_select>
 			<suborgrand_select translate="label">
-                            <label>Apply Giftcard To GrandTotal: </label>
+                            <label>Apply Giftcard To GrandTotal </label>
                             <comment>'Yes' will deduct from GrandTotal 'No' will deduct from SubTotal</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>90</sort_order>
@@ -115,7 +115,7 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </suborgrand_select>
 			 <custom_email_template1 translate="label">
-                            <label>Gift Card Email Template for Customer</label>
+                            <label>Gift Card Email Template To Customer</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_template</source_model>
                             <sort_order>40</sort_order>
@@ -124,7 +124,7 @@
                             <show_in_store>1</show_in_store>
                         </custom_email_template1>
                         <admin_giftcard_template translate="label">
-                            <label>Gift Card Email Template for Admin</label>
+                            <label>Gift Card Email Template Send By Admin</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_email_template</source_model>
                             <sort_order>50</sort_order>

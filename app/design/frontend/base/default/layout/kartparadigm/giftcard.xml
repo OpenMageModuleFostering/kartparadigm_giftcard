@@ -54,7 +54,6 @@
   </checkout_cart_index>
 
 
-
   <!-- adding custom page block to customer myaccount-->
  <kartparadigm_giftcard_customer_balance>
        <reference name="my.account.wrapper">

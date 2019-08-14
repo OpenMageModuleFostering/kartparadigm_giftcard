@@ -24,7 +24,7 @@
 <action>adminhtml/template/index</action>
 </managetemplates>
 <sendgroupgcs module="kartparadigm_giftcard">
-<title>Send Giftcard To Groups</title>
+<title>Send Giftcard</title>
 <sort_order>3</sort_order>
 <action>adminhtml/giftcard/groupsend</action>
 </sendgroupgcs>

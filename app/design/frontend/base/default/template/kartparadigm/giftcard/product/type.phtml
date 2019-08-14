@@ -66,6 +66,9 @@ endif; ?>
   
    padding:2px 2px;
    }
+.price-info{
+display:none;
+}
 </style>
 <script src="<?php echo $this->getSkinUrl('js/giftcard/jquery.min-1.11.1.js') ?>"></script>  
 <script type="text/javascript">
@@ -141,7 +144,7 @@ gc('#tb1').keyup(function(e){
       <tr>
        <td><?php echo $this->__('Delivery Date') ?> :</td><td><span>
     <input type="text" style="width: 120px;" class="input-text" value="" id="selected_date" name="DeliveryDate"/>
-      <img style="" title="Select Date" id="date_select_trig" class="v-middle" alt="" src="<?php
+      <img style="display:inline;" title="Select Date" id="date_select_trig" class="v-middle" alt="" src="<?php
 echo $this->getSkinUrl('images/calendar.gif'); ?> "/>
   
     <script type="text/javascript">

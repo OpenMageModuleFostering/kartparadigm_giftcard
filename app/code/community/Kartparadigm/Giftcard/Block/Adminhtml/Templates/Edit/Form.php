@@ -104,6 +104,8 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Templates_Edit_Form extends Mage_Adm
          'class' => 'required-entry',
          'required' => true,
          'name' => 'giftcard_note',
+	 'value' => 'Please note that: Converting to cash is not allowed. You can use the Gift card code to pay for your order',
+'style'=>"height: 6em;",
       ));
     /*  $fieldset->addField('template_status', 'select', array(
          'name' => 'template_status',

@@ -302,15 +302,15 @@ class Kartparadigm_Giftcard_Model_Observer
                   $mediapath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
                   $imgpath="";
                   if (strpos($mediapath, 'localhost') !== false) {
-                     $row['theme_color'] = "FF0000";
-                     $row['text_color'] = "00AA00";
+                     $row['theme_color'] = "32943F";
+                     $row['text_color'] = "BF0D0D";
                      $imgpath = "http://www.imagesbuddy.com/images/165/smile-greeting-card.jpg";
                   }
                   else if ($row['template_img'] != '') 
                   $imgpath = $mediapath . $row['template_img'];
                   else {
-                     $row['theme_color'] = "FF0000";
-                     $row['text_color'] = "00AA00";
+                     $row['theme_color'] = "32943F";
+                     $row['text_color'] = "BF0D0D";
                      $product = Mage::getModel('catalog/product')->load($col['gcpro_id']);
                        try{
    		         $full_path_url = Mage::helper('catalog/image')->init($product, 'thumbnail');

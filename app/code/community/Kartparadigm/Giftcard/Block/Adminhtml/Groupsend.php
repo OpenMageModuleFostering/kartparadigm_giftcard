@@ -4,7 +4,7 @@ class Kartparadigm_Giftcard_Block_Adminhtml_Groupsend extends Mage_Adminhtml_Blo
 public function __construct(){
 $this->_controller = 'adminhtml_groupsend';
 $this->_blockGroup = 'kartparadigm_giftcard';
-$this->_headerText = Mage::helper('kartparadigm_giftcard')->__('Giftcard Sending To Group');
+$this->_headerText = Mage::helper('kartparadigm_giftcard')->__('Send Giftcard');
 $this->_addButtonLabel = Mage::helper('kartparadigm_giftcard')->__('Add New Giftcard'); 
 parent::__construct();
 $this->_removeButton('add');//to remove add new button

@@ -1,9 +1,0 @@
-<?php
-class Tele_Giftcard_Model_Mysql4_Giftcardtemplate extends
-Mage_Core_Model_Mysql4_Abstract
-{
-public function _construct()
-{
-$this->_init('tele_giftcard/giftcardtemplate', 'giftcardtemplate_id');
-}
-}

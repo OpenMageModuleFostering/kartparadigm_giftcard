@@ -19,7 +19,7 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
       $col = Mage::getModel('kartparadigm_giftcard/giftcard')->getCollection()->addFieldToFilter('giftcard_id', $id)->getFirstItem();
       $row = Mage::getModel('kartparadigm_giftcard/giftcardtemplate')->getCollection()->addFieldToFilter('template_name', $col['template_name'])->getFirstItem();
       $mediapath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
-      Mage::log("Pro Id : ".$col['gcpro_id']);
+     
       if ($row['template_img'] != '') 
       $imgpath = $mediapath . $row['template_img'];
       else if($col['gcpro_id']!=''){
@@ -30,13 +30,13 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
 	catch(Exception $e) {
  	    $imgpath = $mediapath."giftcard/greet.jpg";
 	}
-          $row['theme_color'] = "00AF00";
-         $row['text_color'] = "FF0000";
+          $row['theme_color'] = "32943F";
+         $row['text_color'] = "BF0D0D";
       }
       else {
          $imgpath = $mediapath."giftcard/greet.jpg";
-         $row['theme_color'] = "00AF00";
-         $row['text_color'] = "FF0000";
+         $row['theme_color'] = "32943F";
+         $row['text_color'] = "BF0D0D";
       }
       $barcode = $mediapath . "giftcard/bar.gif";
       $arr['customername'] = $col['customer_name'];
@@ -66,7 +66,9 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
    public function sendAction()
 
    {
+
       $data = $this->getRequest()->getParams();
+      
       $templateid = Mage::getStoreConfig('affiliateproduct/giftcard/admin_giftcard_template');
       $emailTemplate = Mage::getModel('core/email_template');
       if (!is_numeric($templateid)) {
@@ -77,10 +79,13 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
          $emailTemplate->load($templateid);
       }
       $type = Mage::getStoreConfig('giftcard/giftcard/giftcard_sender_email');
-      $customers = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id', $data['customer_groups']);
+      
       $lastorderid = Mage::getModel('kartparadigm_giftcard/giftcard')->getCollection()->addFieldToFilter('added_by', 'Admin')->getLastItem()->getOrderId();
       if ($lastorderid) $orderid = $lastorderid + 1; //admin orderid
       else $orderid = 100;
+if($data['customer_groups']){
+	$customers = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')
+	->addFieldToFilter('group_id', $data['customer_groups']);
       foreach($customers as $customer) {
          $customermail = $customer->getEmail();
          $customername = $customer->getName();
@@ -146,14 +151,89 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
          $emailTemplateVariables['templateimg'] = "http://www.imagesbuddy.com/images/165/smile-greeting-card.jpg";
          else 
          $emailTemplateVariables['templateimg'] = $mediapath . "giftcard/greet.jpg";
-         $emailTemplateVariables['themecolor'] = "red";
-         $emailTemplateVariables['textcolor'] = "green";
+         $emailTemplateVariables['themecolor'] = "#32943F";
+         $emailTemplateVariables['textcolor'] = "#BF0D0D";
          $emailTemplateVariables['receivername'] = $customername;
          $emailTemplateVariables['custommsg'] = $msg;
          $emailTemplate->setSenderName(Mage::getStoreConfig('trans_email/ident_' . $type . '/name'));
          $emailTemplate->setSenderEmail(Mage::getStoreConfig('trans_email/ident_' . $type . '/email'));
          $emailTemplate->send($customermail, $customername, $emailTemplateVariables);
       }
+}
+else{
+$customermail = $data['receiver_mail'];
+         $customername = $data['receiver_name'];
+         $msg = $data['giftcard_msg'];
+         $date = new Zend_Date(Mage::getModel('core/date')->timestamp());
+         $date = $date->toString('Y-M-d H:m:s');
+         $exdate = $data['expiry_date'];
+         $codelengh = Mage::getStoreConfig('giftcard/giftcard/txt_clength');
+         $dashafter = Mage::getStoreConfig('giftcard/giftcard/txt_dashafter');
+         $code = Mage::getModel('kartparadigm_giftcard/custommethods')->generateUniqueId($codelengh - 1);
+         $code = $code . "A"; //admin giftcade
+         $code = join('-', str_split($code, $dashafter));
+         $data = array(
+            'giftcard_val' => $data['giftcard_val'],
+            'giftcard_bal' => $data['giftcard_val'],
+            'giftcard_code' => $code,
+            'order_id' => $orderid,
+            'giftcard_currency' => $data['giftcard_currency'],
+            'customer_name' => $customername,
+            'customer_mail' => $customermail,
+            'receiver_name' => $customername,
+            'receiver_mail' => $customermail,
+            'giftcard_name' => $data['giftcard_name'],
+            'giftcard_msg' => $data['giftcard_msg'],
+            'created_date' => $date,
+            'store_id' => $data['store_id'],
+            'expiry_date' => $exdate,
+            'giftcard_status' => $data['giftcard_status'],
+            'added_by' => 'Admin',
+            'is_notified' => 1,
+         );
+         $model = Mage::getModel('kartparadigm_giftcard/giftcard')->setData($data);
+         $insertId = $model->save()->getId();
+           // inserting in to trans table
+               $transdata = array(
+                  'giftcard_val' => $data['giftcard_val'],
+                  'giftcard_id' => $insertId,
+                  'order_id' => $orderid, //
+                  'giftcard_bal' => $data['giftcard_val'],
+                  'giftcard_balused' => 0,
+                  'giftcard_code' => $code,
+                  'giftcard_currency' => $data['giftcard_currency'],
+                  'customer_name' => $data['receiver_name'],
+                  'customer_mail' => $data['receiver_mail'],
+                  'giftcard_name' => $data['giftcard_name'],
+                  'created_date' => $date,
+                  'transac_date' => $date,
+                  'store_id' => $data['store_id'],
+                  'expiry_date' => $exdate,
+                  'giftcard_status' => $data['giftcard_status'],
+                  'comment' => "Added By Admin"
+               );
+               $trasmodel = Mage::getModel('kartparadigm_giftcard/giftcardtrans')->setData($transdata);
+               $trasmodel->save();
+             
+         $orderid++;
+         $emailTemplateVariables['customername'] = "Admin";
+         $emailTemplateVariables['giftcardname'] = $data['giftcard_name'];
+         $emailTemplateVariables['giftcardval'] = Mage::app()->getLocale()->currency($data['giftcard_currency'])->getSymbol()." ".$data['giftcard_val'];
+         $emailTemplateVariables['giftcardcode'] = $code;
+         $mediapath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+         if (strpos($mediapath, 'localhost') !== false) 
+         $emailTemplateVariables['templateimg'] = "http://www.imagesbuddy.com/images/165/smile-greeting-card.jpg";
+         else 
+         $emailTemplateVariables['templateimg'] = $mediapath . "giftcard/greet.jpg";
+         $emailTemplateVariables['themecolor'] = "#32943F";
+         $emailTemplateVariables['textcolor'] = "#BF0D0D";
+         $emailTemplateVariables['receivername'] = $customername;
+         $emailTemplateVariables['custommsg'] = $msg;
+         $emailTemplate->setSenderName(Mage::getStoreConfig('trans_email/ident_' . $type . '/name'));
+         $emailTemplate->setSenderEmail(Mage::getStoreConfig('trans_email/ident_' . $type . '/email'));
+         $emailTemplate->send($customermail, $customername, $emailTemplateVariables);
+      
+}
       Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Giftcards Sent Successfully.'));
       $this->loadLayout();
       $this->renderLayout();
@@ -271,8 +351,8 @@ class Kartparadigm_Giftcard_Adminhtml_GiftcardController extends Mage_Adminhtml_
                $mediapath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
                if (strpos($mediapath, 'localhost') !== false) $emailTemplateVariables['templateimg'] = "http://www.imagesbuddy.com/images/165/smile-greeting-card.jpg";
                else $emailTemplateVariables['templateimg'] = $mediapath . "giftcard/greet.jpg";
-               $emailTemplateVariables['themecolor'] = "red";
-               $emailTemplateVariables['textcolor'] = "green";
+               $emailTemplateVariables['themecolor'] = "#32943F";
+               $emailTemplateVariables['textcolor'] = "#BF0D0D";
                 $emailTemplateVariables['receivername'] = $data['receiver_name'];
                $emailTemplateVariables['custommsg'] = $data['giftcard_msg'];
                $emailTemplate->setSenderName(Mage::getStoreConfig('trans_email/ident_' . $type . '/name'));
