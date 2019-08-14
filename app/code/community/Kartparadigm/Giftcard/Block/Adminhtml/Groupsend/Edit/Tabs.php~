@@ -1,0 +1,34 @@
+<?php
+
+class Solvingmagento_AffiliateProduct_Block_Adminhtml_Registries_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setId('giftregistries_tabs');
+        $this->setDestElementId('edit_form');
+        $this->setTitle(Mage::helper('solvingmagento_affiliateproduct')->__('Manage Gift Cards'));
+    }
+
+    protected function _beforeToHtml()
+    {
+        $this->addTab('form_section', array(
+            'label'     => Mage::helper('solvingmagento_affiliateproduct')->__('Gift Certificate Information'),
+            'title'     => Mage::helper('solvingmagento_affiliateproduct')->__('Gift Certificate Information'),
+            'content'   => $this->getLayout()->createBlock('solvingmagento_affiliateproduct/adminhtml_registries_edit_tab_form')->toHtml(),
+        ));
+
+        if ($id = Mage::app()->getRequest()->getParam('id')) {
+            $this->addTab('history', array(
+                'label'     => Mage::helper('solvingmagento_affiliateproduct')->__('Transaction History'),
+                'title'     => Mage::helper('solvingmagento_affiliateproduct')->__('Transaction History'),
+                'content'   => $this->getLayout()->createBlock('solvingmagento_affiliateproduct/adminhtml_registries_edit_tab_history')
+                    ->setCertId($id)
+                    ->toHtml(),
+            ));
+        }
+
+        return parent::_beforeToHtml();
+    }
+}
