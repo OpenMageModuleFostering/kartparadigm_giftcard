@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Kartparadigm_Giftcard",
+    "name": "OpenMageModuleFostering\/Kartparadigm_Giftcard",
     "type": "magento-module",
     "license": "OSL",
     "homepage": "",
     "description": "Giftcard Extension For Selling Giftcard type products in magento store",
     "authors": [
-    {
-        "name": "Kartparadigm",
-        "email": "kartparadigm@gmail.com"
-    }
-],
+        {
+            "name": "Kartparadigm",
+            "email": "kartparadigm@gmail.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
